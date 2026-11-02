@@ -1,0 +1,14 @@
+{
+    "name": "uts/pemweb-mvc-inventarislab",
+    "description": "Sistem Inventaris & Peminjaman Alat Lab Terpadu",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    }
+}
+
