@@ -52,18 +52,24 @@ $router->post('/lab/update/{id}', [LabController::class, 'update']);
 $router->get('/lab/delete/{id}', [LabController::class, 'delete']);
 
 // Route: Modul Mahasiswa
-$router->get('/mahasiswa', [MahasiswaController::class, 'index']);
-$router->get('/mahasiswa/create', [MahasiswaController::class, 'create']);
-$router->post('/mahasiswa/store', [MahasiswaController::class, 'store']);
-$router->get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit']);
-$router->post('/mahasiswa/update/{id}', [MahasiswaController::class, 'update']);
-$router->get('/mahasiswa/delete/{id}', [MahasiswaController::class, 'delete']);
+$router->get('/mahasiswa',                 [MahasiswaController::class, 'index']);
+$router->get('/mahasiswa/create',          [MahasiswaController::class, 'create']);
+$router->post('/mahasiswa/store',          [MahasiswaController::class, 'store']);
+$router->get('/mahasiswa/edit/{id}',       [MahasiswaController::class, 'edit']);
+$router->post('/mahasiswa/update/{id}',    [MahasiswaController::class, 'update']);
+$router->get('/mahasiswa/delete/{id}',     [MahasiswaController::class, 'delete']);
+$router->get('/mahasiswa/riwayat/{id}',    [MahasiswaController::class, 'riwayat']);
 
 // Route: Peminjaman
-$router->get('/peminjaman', [PeminjamanController::class, 'index']);
-$router->get('/peminjaman/create', [PeminjamanController::class, 'create']);
-$router->post('/peminjaman/store', [PeminjamanController::class, 'store']);
-$router->get('/peminjaman/kembalikan/{id}', [PeminjamanController::class, 'kembalikan']);
+$router->get('/peminjaman',                      [PeminjamanController::class, 'index']);
+$router->get('/peminjaman/create',               [PeminjamanController::class, 'create']);
+$router->post('/peminjaman/store',               [PeminjamanController::class, 'store']);
+$router->get('/peminjaman/kembalikan/{id}',      [PeminjamanController::class, 'kembalikan']);
+// --- Kontribusi: Detail, Edit, Update, Delete ---
+$router->get('/peminjaman/detail/{id}',          [PeminjamanController::class, 'detail']);
+$router->get('/peminjaman/edit/{id}',            [PeminjamanController::class, 'edit']);
+$router->post('/peminjaman/update/{id}',         [PeminjamanController::class, 'update']);
+$router->get('/peminjaman/delete/{id}',          [PeminjamanController::class, 'delete']);
 
 $router->dispatch();
 

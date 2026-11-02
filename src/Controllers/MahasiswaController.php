@@ -4,12 +4,15 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Repositories\MahasiswaRepository;
+use App\Repositories\PeminjamanRepository;
 
 class MahasiswaController extends Controller {
     private MahasiswaRepository $mhsRepo;
+    private PeminjamanRepository $pinjamRepo;
 
     public function __construct() {
-        $this->mhsRepo = new MahasiswaRepository();
+        $this->mhsRepo    = new MahasiswaRepository();
+        $this->pinjamRepo = new PeminjamanRepository();
     }
 
     public function index(): void {
@@ -115,6 +118,38 @@ class MahasiswaController extends Controller {
             set_flash('error', 'Data mahasiswa tidak ditemukan.');
         }
         redirect('/mahasiswa');
+    }
+
+    // -------------------------------------------------------
+    // KONTRIBUSI: Riwayat Peminjaman per Mahasiswa
+    // -------------------------------------------------------
+    public function riwayat(string $id): void {
+        $mhs = $this->mhsRepo->findById((int)$id);
+        if (!$mhs) {
+            set_flash('error', 'Data mahasiswa tidak ditemukan.');
+            redirect('/mahasiswa');
+        }
+
+        // Ambil semua peminjaman, filter berdasarkan id_mahasiswa
+        $semuaPinjam = $this->pinjamRepo->getAll();
+        $riwayat = array_values(array_filter(
+            $semuaPinjam,
+            fn($p) => (int)$p['id_mahasiswa'] === (int)$id
+        ));
+
+        $totalPinjam  = count($riwayat);
+        $masihDipinjam = count(array_filter($riwayat, fn($p) => $p['status'] === 'Dipinjam'));
+        $sudahKembali  = count(array_filter($riwayat, fn($p) => $p['status'] === 'Kembali'));
+
+        $this->render('mahasiswa/riwayat', [
+            'title'         => 'Riwayat Peminjaman — ' . $mhs['nama'],
+            'activeMenu'    => 'mahasiswa',
+            'mhs'           => $mhs,
+            'riwayat'       => $riwayat,
+            'totalPinjam'   => $totalPinjam,
+            'masihDipinjam' => $masihDipinjam,
+            'sudahKembali'  => $sudahKembali,
+        ]);
     }
 }
 

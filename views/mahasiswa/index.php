@@ -62,15 +62,19 @@ require_once dirname(__DIR__) . '/layout/header.php';
                                 <?php endif; ?>
                             </td>
                             <td style="text-align: right; white-space: nowrap;">
+                                <a href="<?= base_url('/mahasiswa/riwayat/' . $mhs['id']) ?>"
+                                   class="btn btn-secondary btn-sm" title="Lihat Riwayat Peminjaman">
+                                    Riwayat
+                                </a>
                                 <a href="<?= base_url('/mahasiswa/edit/' . $mhs['id']) ?>" class="btn-icon" title="Edit Mahasiswa" aria-label="Edit Mahasiswa">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                     </svg>
                                 </a>
-                                <a href="<?= base_url('/mahasiswa/delete/' . $mhs['id']) ?>" 
-                                   class="btn-icon danger" 
-                                   title="Hapus Mahasiswa" 
+                                <a href="<?= base_url('/mahasiswa/delete/' . $mhs['id']) ?>"
+                                   class="btn-icon danger"
+                                   title="Hapus Mahasiswa"
                                    aria-label="Hapus Mahasiswa"
                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data mahasiswa <?= e(addslashes($mhs['nama'])) ?>?');">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
