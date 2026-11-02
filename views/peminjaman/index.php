@@ -19,9 +19,44 @@ require_once dirname(__DIR__) . '/layout/header.php';
 </div>
 
 <div class="card">
-    <div class="card-header">
+    <div class="card-header" style="flex-wrap: wrap; gap: 12px;">
         <div class="card-title">Daftar Transaksi Peminjaman</div>
-        <span style="font-size: 12px; color: var(--text-muted);">Total <?= count($items) ?> catatan transaksi</span>
+        <span style="font-size: 12px; color: var(--text-muted);">Total <?= count($items) ?> catatan</span>
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <!-- Tab Filter Status -->
+        <div style="display: flex; gap: 6px;">
+            <?php
+            $statuses = ['' => 'Semua', 'Dipinjam' => 'Dipinjam', 'Kembali' => 'Selesai'];
+            foreach ($statuses as $val => $label):
+                $active = ($filterStatus ?? '') === $val;
+                $url    = base_url('/peminjaman') . ($val ? '?status=' . urlencode($val) : '');
+                if (!empty($filterKeyword)) $url .= ($val ? '&' : '?') . 'q=' . urlencode($filterKeyword);
+            ?>
+                <a href="<?= $url ?>"
+                   style="padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-decoration: none;
+                          border: 1px solid <?= $active ? 'var(--primary)' : 'var(--border)' ?>;
+                          background: <?= $active ? 'var(--primary)' : 'transparent' ?>;
+                          color: <?= $active ? '#111' : 'var(--text-muted)' ?>;">
+                    <?= $label ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Search Input -->
+        <form action="<?= base_url('/peminjaman') ?>" method="GET" style="display: flex; gap: 8px; flex: 1; min-width: 200px;">
+            <?php if (!empty($filterStatus)): ?>
+                <input type="hidden" name="status" value="<?= e($filterStatus) ?>">
+            <?php endif; ?>
+            <input type="text" name="q" class="form-control" placeholder="Cari nama mahasiswa, NIM, atau alat..."
+                   value="<?= e($filterKeyword ?? '') ?>" style="font-size: 13px; padding: 6px 12px; flex: 1;">
+            <button type="submit" class="btn btn-secondary btn-sm">Cari</button>
+            <?php if (!empty($filterKeyword) || !empty($filterStatus)): ?>
+                <a href="<?= base_url('/peminjaman') ?>" class="btn btn-secondary btn-sm" style="white-space: nowrap;">✕ Reset</a>
+            <?php endif; ?>
+        </form>
     </div>
 
     <div class="table-responsive">
@@ -72,8 +107,16 @@ require_once dirname(__DIR__) . '/layout/header.php';
                                 <?php endif; ?>
                             </td>
                             <td style="text-align: right; white-space: nowrap;">
+                                <a href="<?= base_url('/peminjaman/detail/' . $item['id']) ?>"
+                                   class="btn btn-secondary btn-sm" title="Lihat Detail">
+                                    Detail
+                                </a>
                                 <?php if ($item['status'] === 'Dipinjam'): ?>
-                                    <a href="<?= base_url('/peminjaman/kembalikan/' . $item['id']) ?>" 
+                                    <a href="<?= base_url('/peminjaman/edit/' . $item['id']) ?>"
+                                       class="btn btn-secondary btn-sm" title="Edit">
+                                        Edit
+                                    </a>
+                                    <a href="<?= base_url('/peminjaman/kembalikan/' . $item['id']) ?>"
                                        class="btn btn-secondary btn-sm"
                                        onclick="return confirm('Konfirmasi pengembalian alat ini?');">
                                         Kembalikan
